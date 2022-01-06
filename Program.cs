@@ -22,23 +22,10 @@ namespace Minidump
             public List<KerberosSessions.KerberosLogonItem> klogonlist;
         }
 
-        private static void Main(string[] args)
+        public static void Main(byte[] dumpContent)
         {
-            if (args.Length == 0)
-            {
-                Console.WriteLine("Missing argument");
-                Console.WriteLine("Example. Minidump.exe C:\\windows\\temp\\lsass.dmp");
-                return;
-            }
-            string filename = args[0];
-            if (!File.Exists(filename))
-            {
-                Console.WriteLine("Could not find file " + filename);
-                return;
-            }
-
             MiniDump minidump = new MiniDump();
-            using (BinaryReader fileBinaryReader = new BinaryReader(File.Open(filename, FileMode.Open)))
+            using (BinaryReader fileBinaryReader = new BinaryReader(new MemoryStream(dumpContent)))
             {
                 // parse header && streams
                 minidump.fileBinaryReader = fileBinaryReader;
